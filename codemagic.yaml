@@ -1,1 +1,23 @@
 
+# codemagic.yaml - 专为 millionFund (Flutter) 优化
+workflows:
+  android-release:
+    name: Build Android APK (arm64)
+    max_build_duration: 30
+    environment:
+      flutter: 3.24.0  # millionFund 兼容的稳定版
+      xcode: latest
+    scripts:
+      - echo "检测 Flutter 环境..."
+      - flutter --version
+      - echo "获取依赖..."
+      - flutter pub get
+      - echo "构建 APK..."
+      - flutter build apk --release --target-platform android-arm64
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/mapping.txt
+    publishing:
+      email:
+        recipients:
+          - $CM_EMAIL  # 如果你在 Codemagic 设置了邮箱，会自动收到通知
